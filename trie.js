@@ -51,11 +51,11 @@ class TrieNode {
                 collectedChildren.push(childValue)
             }
 
-            if (childValue.length > str.length) {
-                childNode.fetchChildren(str, depth + 1, collectedChildren);
-            } else {
+            // if (childValue.length > str.length) {
+            //     childNode.fetchChildren(str, depth + 1, collectedChildren);
+            // } else {
                 childNode.fetchAllChildren(collectedChildren);
-            }
+            // }
         }
     }
 
@@ -106,6 +106,6 @@ var t = new Trie();
 t.insertTrieValue('aryeh')
 assert(t.fetchMatches('ar').join('') === 'aryeh', "trie with a lot of ancestors sub-lookup len 2");
 
-// var t = new Trie();
-// t.insertTrieValue('aryeh')
-// assert(t.fetchMatches('ary').join('') === 'aryeh', "trie with a lot of ancestors sub-lookup len 3");
+var t = new Trie();
+t.insertTrieValue('aryeh')
+assert(t.fetchMatches('ary').join('') === 'aryeh', "trie with a lot of ancestors sub-lookup len 3");

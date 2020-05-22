@@ -1,9 +1,9 @@
 # trie
-Just for fun. Simple trie implementation in JS that holds strings and can find matches.
+Just for fun. Simple trie implementation in JS. Saw an implementation in the wild and wondered "how hard would it be to write that myself?" 
 
 ## why
 
-tries are faster for certain kinds of lookups -- i.e. autocomplete and finding matches for a given string against a large list of items
+tries are faster for certain kinds of lookups -- i.e. autocomplete and finding matches for a given string against a large list of items. More information on [Wikipedia](https://en.wikipedia.org/wiki/Trie)
 
 ## usage
 

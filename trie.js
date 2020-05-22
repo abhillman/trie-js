@@ -22,8 +22,6 @@ class TrieNode {
         return !this.hasNoChildren();
     }
 
-    // todo: terminal node
-
     addChildValue(str, depth) {
         if (str.length === depth) {
             if (str) this.markTerminal();
@@ -40,22 +38,20 @@ class TrieNode {
         var child = this.children[childValue];
 
         if (!child) return;
-        if (child.terminal) {
+        if (child.terminal && str.length <= childValue.length) {
             collectedChildren.push(childValue)
         }
 
         for (var childValue in child.children) {
             var childNode = child.children[childValue];
 
-            if (childNode.terminal) {
-                collectedChildren.push(childValue)
+            if (childNode.terminal && str.length <= childValue.length) {
+                if (str.length !== childValue.length || str[str.length - 1] === childValue[childValue.length - 1]) {
+                    collectedChildren.push(childValue)
+                }
             }
 
-            // if (childValue.length > str.length) {
-            //     childNode.fetchChildren(str, depth + 1, collectedChildren);
-            // } else {
-                childNode.fetchAllChildren(collectedChildren);
-            // }
+            childNode.fetchAllChildren(collectedChildren);
         }
     }
 
@@ -109,3 +105,47 @@ assert(t.fetchMatches('ar').join('') === 'aryeh', "trie with a lot of ancestors 
 var t = new Trie();
 t.insertTrieValue('aryeh')
 assert(t.fetchMatches('ary').join('') === 'aryeh', "trie with a lot of ancestors sub-lookup len 3");
+
+var t = new Trie();
+t.insertTrieValue('a')
+t.insertTrieValue('ab')
+t.insertTrieValue('abc')
+assert(t.fetchMatches('a').join(',') === 'a,ab,abc')
+
+var t = new Trie();
+t.insertTrieValue('a')
+t.insertTrieValue('ab')
+t.insertTrieValue('abc')
+assert(t.fetchMatches('ab').join(',') === 'ab,abc')
+
+var t = new Trie();
+t.insertTrieValue('a')
+t.insertTrieValue('ab')
+t.insertTrieValue('abc')
+assert(t.fetchMatches('abc').join(',') === 'abc')
+
+var t = new Trie();
+t.insertTrieValue('a')
+t.insertTrieValue('ab')
+t.insertTrieValue('abc')
+t.insertTrieValue('abcdefg')
+assert(t.fetchMatches('abc').join(',') === 'abc,abcdefg')
+
+var t = new Trie();
+t.insertTrieValue('xyz');
+t.insertTrieValue('abc');
+assert(t.fetchMatches('a').join(',') === 'abc') 
+
+var t = new Trie();
+['to', 'tea', 'ted', 'ten', 'in', 'inn', 'A'].forEach((word) => { t.insertTrieValue(word); })
+assert(t.fetchMatches('A').join(',') === 'A');
+assert(t.fetchMatches('t').join(',') === 'to,tea,ted,ten');
+assert(t.fetchMatches('te').join(',') === 'tea,ted,ten');
+assert(t.fetchMatches('i').join(',') === 'in,inn');
+assert(t.fetchMatches('in').join(',') === 'in,inn');
+
+var t = new Trie();
+t.insertTrieValue('tea');
+t.insertTrieValue('to');
+t.fetchMatches('te')
+assert(t.fetchMatches('te').join('') === 'tea')
